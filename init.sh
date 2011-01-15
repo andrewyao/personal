@@ -1,5 +1,6 @@
 #!/bin/sh
 
+# create symbolic links
 rm -rf ~/.bashrc
 rm -rf ~/.vimrc
 rm -rf ~/.vim
