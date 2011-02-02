@@ -131,3 +131,14 @@ parse_svn_revision() {
 
 PS1='\u@\h:\w $(parse_git_branch)$(parse_svn_revision)\$ '
 
+function desktop-review { 
+    if [ $# -lt 3 ]; then
+        echo "Usage: desktop-review rev-list reviewer summary ...";
+        return;
+    fi;
+    REVLIST=$1;
+    REVIEWER=$2;
+    SUMMARY=$3;
+    shift 3;
+    post-review --description="$(git whatchanged $REVLIST)" --target-groups=auth_apps --target-people="$REVIEWER" --diff-filename=<(git diff "$REVLIST") --summary="$SUMMARY" $@
+}
