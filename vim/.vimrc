@@ -1,7 +1,7 @@
 " File:       $HOME/.vimrc
 " Purpose:    Configuration file for VIM
 " Author:     Andrew Yao
-" Last update:Sat Sep 06
+" Last update:Feb 2011
 "
 version 5.4
 
