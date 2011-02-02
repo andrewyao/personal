@@ -1,6 +1,6 @@
 #!/bin/sh
 
-# removed original files
+# remove original files
 rm -rf ~/.bashrc
 rm -rf ~/.vimrc
 rm -rf ~/.vim
