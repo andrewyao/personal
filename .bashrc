@@ -109,7 +109,7 @@ alias cdhue='cd $HOME/opsaps/repo.d/hue'
 alias cdaps='cd $HOME/opsaps'
 alias h_start='./repo.d/hue/tools/scripts/configure-hadoop.sh start'
 alias h_stop='./repo.d/hue/tools/scripts/configure-hadoop.sh stop'
-alias hue_start='DESKTOP_DEPENDER_DEBUG=1 ./repo.d/hue/build/env/bin/hue runserver_plus'
+alias hue_start='DESKTOP_DEBUG=1 DESKTOP_DEPENDER_DEBUG=1 ./repo.d/hue/build/env/bin/hue runserver_plus'
 alias hue_job='./repo.d/hue/build/env/bin/hue subjobd'
 alias hue_ugm='./repo.d/hue/build/env/bin/hue userman_user_group_manager'
 alias auth_tests='~/opsaps/repo.d/hue/build/env/bin/hue test specific userman.tests --pdb --pdb-failure -s'
@@ -130,6 +130,19 @@ parse_svn_revision() {
         echo "(r$REV$DIRTY)"
 }
 function gvim { /Applications/MacVim.app/Contents/MacOS/Vim -g $*; } 
+
+function desktop-review { 
+    if [ $# -lt 3 ]; then
+        echo "Usage: desktop-review rev-list reviewer summary ...";
+        return;
+    fi;
+    REVLIST=$1;
+    REVIEWER=$2;
+    SUMMARY=$3;
+    shift 3;
+    post-review --description="$(git whatchanged $REVLIST)" --target-groups=app-auth --target-people="$REVIEWER" --diff-filename=<(git diff "$REVLIST") --summary="$SUMMARY" $@
+}
+
 
 PS1='\u@\h:\w $(parse_git_branch)$(parse_svn_revision)\$ '
 

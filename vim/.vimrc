@@ -142,12 +142,12 @@ au! BufRead,BufNewFile *.cls   set filetype=vb
 au! BufRead,BufNewFile *.php   set filetype=html
 au! BufRead,BufNewFile *.as    set filetype=actionscript
 au! BufRead,BufNewFile *.mxml  set filetype=mxml
-au! BufRead,BufNewFile *.py    set filetype=python shiftwidth=2 tabstop=2 softtabstop=2
-au! BufRead,BufNewFile *.mako  set filetype=mako sw=2 ts=2 sts=2
+au! BufRead,BufNewFile *.py    set filetype=python expandtab shiftwidth=2 tabstop=2 softtabstop=2
+au! BufRead,BufNewFile *.mako  set filetype=mako expandtab sw=2 ts=2 sts=2
 au! BufRead,BufNewFIle *.js    set filetype=javascript noexpandtab shiftwidth=2 tabstop=2 softtabstop=2
+au! BufRead,BufNewFile *.css   set filetype=css noexpandtab sw=2 ts=2 sts=2
 au! BufWrite *.mako silent! j%s/\s\+$//ge
 au! BufWrite *.py silent! %s/\s\+$//ge
-au! BufWrite *.js silent! %s/\s\+$//ge
 au! BufWrite *.css silent! %s/\s\+$//ge
 augroup END
 
