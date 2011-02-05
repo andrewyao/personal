@@ -109,9 +109,10 @@ alias cdhue='cd $HOME/opsaps/repo.d/hue'
 alias cdaps='cd $HOME/opsaps'
 alias h_start='./repo.d/hue/tools/scripts/configure-hadoop.sh start'
 alias h_stop='./repo.d/hue/tools/scripts/configure-hadoop.sh stop'
-alias hue_start='./repo.d/hue/build/env/bin/hue runserver_plus'
+alias hue_start='DESKTOP_DEPENDER_DEBUG=1 ./repo.d/hue/build/env/bin/hue runserver_plus'
 alias hue_job='./repo.d/hue/build/env/bin/hue subjobd'
 alias hue_ugm='./repo.d/hue/build/env/bin/hue userman_user_group_manager'
+alias auth_tests='~/opsaps/repo.d/hue/build/env/bin/hue test specific userman.tests --pdb --pdb-failure -s'
 
 export HADOOP_HOME=$HOME/hadoop-0.20.2+737
 export PATH=$HOME/crepo:$PATH
@@ -128,6 +129,7 @@ parse_svn_revision() {
         [ "$(svn st)" ] && DIRTY=' *'
         echo "(r$REV$DIRTY)"
 }
+function gvim { /Applications/MacVim.app/Contents/MacOS/Vim -g $*; } 
 
 PS1='\u@\h:\w $(parse_git_branch)$(parse_svn_revision)\$ '
 
@@ -142,3 +144,4 @@ function desktop-review {
     shift 3;
     post-review --description="$(git whatchanged $REVLIST)" --target-groups=auth_apps --target-people="$REVIEWER" --diff-filename=<(git diff "$REVLIST") --summary="$SUMMARY" $@
 }
+export PATH=/usr/local/mysql-5.5.8-osx10.6-x86_64/bin:$PATH

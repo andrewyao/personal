@@ -157,10 +157,15 @@ hi Cursor          guifg=#000d18 guibg=#8faf9f gui=bold
 hi Debug           guifg=#bca3a3 gui=bold
 hi Define          guifg=#ffcfaf gui=bold
 hi Delimiter       guifg=#8f8f8f
-hi DiffAdd         guifg=#709080 guibg=#313c36 gui=bold
-hi DiffChange      guibg=#333333
-hi DiffDelete      guifg=#333333 guibg=#464646
+"hi DiffAdd         guifg=#709080 guibg=#313c36 gui=bold
+"hi DiffChange      guibg=#333333
+"hi DiffDelete      guifg=#333333 guibg=#464646
+"hi DiffText        guifg=#ecbcbc guibg=#41363c gui=bold
+hi DiffAdd         guifg=#00FF00 guibg=#313c36 gui=bold
+hi DiffChange      guibg=#0000FF
+hi DiffDelete      guifg=#FF0000 guibg=#464646 gui=bold
 hi DiffText        guifg=#ecbcbc guibg=#41363c gui=bold
+
 hi Directory       guifg=#dcdccc gui=bold
 hi ErrorMsg        guifg=#80d4aa guibg=#2f2f2f gui=bold
 hi Exception       guifg=#c3bf9f gui=bold
@@ -220,10 +225,10 @@ if &t_Co > 255
     hi Debug           ctermfg=181   cterm=bold
     hi Define          ctermfg=223   cterm=bold
     hi Delimiter       ctermfg=245
-    hi DiffAdd         ctermfg=66    ctermbg=237     cterm=bold
-    hi DiffChange      ctermbg=236
-    hi DiffDelete      ctermfg=236   ctermbg=238
-    hi DiffText        ctermfg=217   ctermbg=237     cterm=bold
+    "hi DiffAdd         ctermfg=66    ctermbg=237     cterm=bold
+    "hi DiffChange      ctermbg=236
+    "hi DiffDelete      ctermfg=236   ctermbg=238
+    "hi DiffText        ctermfg=217   ctermbg=237     cterm=bold
     hi Directory       ctermfg=188   cterm=bold
     hi ErrorMsg        ctermfg=115   ctermbg=236     cterm=bold
     hi Exception       ctermfg=249   cterm=bold
@@ -293,12 +298,13 @@ if &t_Co > 255
         else
             hi CursorColumn      ctermbg=235   cterm=none
         endif
+
     else
         hi Normal ctermfg=188 ctermbg=237
         hi Cursor          ctermbg=109
-        hi diffadd         ctermbg=237
-        hi diffdelete      ctermbg=238
-        hi difftext        ctermbg=237
+        "hi diffadd         ctermbg=237
+        "hi diffdelete      ctermbg=238
+        "hi difftext        ctermbg=237
         hi errormsg        ctermbg=237
         hi foldcolumn      ctermbg=238
         hi folded          ctermbg=238
@@ -367,14 +373,18 @@ if exists("g:zenburn_high_Contrast") && g:zenburn_high_Contrast
     hi TabLineSel      guifg=#efefef guibg=#1c1c1b gui=bold
     hi TabLine         guifg=#b6bf98 guibg=#181818 gui=bold
     hi NonText         guifg=#404040 gui=bold
+
 else
     " Original, lighter background
     hi Normal          guifg=#dcdccc guibg=#3f3f3f
-    hi CursorLine      guibg=#434443
+
+    " hi CursorLine      guibg=#434443 
+    hi CursorLine      guibg=#323332
     if exists("g:zenburn_unified_CursorColumn") && g:zenburn_unified_CursorColumn
         hi CursorColumn    guibg=#434343
     else
-        hi CursorColumn    guibg=#4f4f4f
+        " hi CursorColumn    guibg=#4f4f4f
+        hi CursorColumn    guibg=#323332
     endif
     hi Pmenu           guibg=#2c2e2e guifg=#9f9f9f
     hi PMenuSel        guibg=#242424 guifg=#d0d0a0 gui=bold
@@ -386,7 +396,13 @@ else
     hi TabLineSel      guifg=#efefef guibg=#3a3a39 gui=bold
     hi TabLine         guifg=#b6bf98 guibg=#353535 gui=bold
     hi NonText         guifg=#5b605e gui=bold
+
 endif
+
+"hi DiffAdd cterm=none ctermbg=Green
+"hi DiffDelete cterm=none ctermbg=Red
+"hi DiffChange cterm=none ctermbg=Yellow
+"hi DiffText cterm=none ctermbg=Magenta gui=none guibg=#00FFFF
 
 
 if exists("g:zenburn_alternate_Visual") && g:zenburn_alternate_Visual
