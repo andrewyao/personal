@@ -113,6 +113,7 @@ alias hue_start='DESKTOP_DEBUG=1 DESKTOP_DEPENDER_DEBUG=1 ./repo.d/hue/build/env
 alias hue_job='./repo.d/hue/build/env/bin/hue subjobd'
 alias hue_ugm='./repo.d/hue/build/env/bin/hue userman_user_group_manager'
 alias auth_tests='~/opsaps/repo.d/hue/build/env/bin/hue test specific userman.tests --pdb --pdb-failure -s'
+alias gx='gitx --all &'
 
 export HADOOP_HOME=$HOME/hadoop-0.20.2+737
 export PATH=$HOME/crepo:$PATH
