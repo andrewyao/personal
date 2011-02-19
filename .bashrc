@@ -109,13 +109,12 @@ alias cdhue='cd $HOME/opsaps/repo.d/hue'
 alias cdaps='cd $HOME/opsaps'
 alias h_start='./repo.d/hue/tools/scripts/configure-hadoop.sh start'
 alias h_stop='./repo.d/hue/tools/scripts/configure-hadoop.sh stop'
-alias hue_start='DESKTOP_DEBUG=1 DESKTOP_DEPENDER_DEBUG=1 ./repo.d/hue/build/env/bin/hue runserver_plus'
+alias hue_start='DESKTOP_DEBUG=1 DESKTOP_DEPENDER_DEBUG=1 ./repo.d/hue/build/env/bin/hue runserver_plus 0.0.0.0:16080'
 alias hue_job='./repo.d/hue/build/env/bin/hue subjobd'
-alias hue_ugm='./repo.d/hue/build/env/bin/hue userman_user_group_manager'
+alias hue_auth='./repo.d/hue/build/env/bin/hue authmanager'
 alias auth_tests='~/opsaps/repo.d/hue/build/env/bin/hue test specific userman.tests --pdb --pdb-failure -s'
 alias gx='gitx --all &'
 
-export HADOOP_HOME=$HOME/hadoop-0.20.2+737
 export PATH=$HOME/crepo:$PATH
 
 function parse_git_branch
@@ -159,3 +158,12 @@ function desktop-review {
     post-review --description="$(git whatchanged $REVLIST)" --target-groups=auth_apps --target-people="$REVIEWER" --diff-filename=<(git diff "$REVLIST") --summary="$SUMMARY" $@
 }
 export PATH=/usr/local/mysql-5.5.8-osx10.6-x86_64/bin:$PATH
+
+export HADOOP_CONF_DIR=$HOME/hadoop-conf
+export HADOOP_HOME=/home/andyao/hadoop-0.20.2-CDH3B4-SNAPSHOT
+export HH=$HADOOP_HOME
+export OOZIE_HOME=/home/andyao/oozie-2.3.0-CDH3B4-SNAPSHOT
+export OH=$HADOOP_HOME
+export HC=$HADOOP_HOME/conf
+export HL=$HADOOP_HOME/logs
+export PATH=$HADOOP_HOME/bin:$JAVA_HOME/bin:$PATH
