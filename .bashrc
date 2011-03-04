@@ -129,7 +129,6 @@ parse_svn_revision() {
         [ "$(svn st)" ] && DIRTY=' *'
         echo "(r$REV$DIRTY)"
 }
-function gvim { /Applications/MacVim.app/Contents/MacOS/Vim -g $*; } 
 
 function desktop-review { 
     if [ $# -lt 3 ]; then
@@ -157,13 +156,19 @@ function desktop-review {
     shift 3;
     post-review --description="$(git whatchanged $REVLIST)" --target-groups=auth_apps --target-people="$REVIEWER" --diff-filename=<(git diff "$REVLIST") --summary="$SUMMARY" $@
 }
-export PATH=/usr/local/mysql-5.5.8-osx10.6-x86_64/bin:$PATH
+
+unamestr=`uname`
+
+if [[ "$unamestr" == "Darwin" ]]; then
+    export PATH=/usr/local/mysql-5.5.8-osx10.6-x86_64/bin:$PATH
+    function gvim { /Applications/MacVim.app/Contents/MacOS/Vim -g $*; } 
+fi
 
 export HADOOP_CONF_DIR=$HOME/hadoop-conf
 export HADOOP_HOME=/home/andyao/hadoop-0.20.2-CDH3B4-SNAPSHOT
-export HH=$HADOOP_HOME
 export OOZIE_HOME=/home/andyao/oozie-2.3.0-CDH3B4-SNAPSHOT
-export OH=$HADOOP_HOME
+export HH=$HADOOP_HOME
 export HC=$HADOOP_HOME/conf
 export HL=$HADOOP_HOME/logs
 export PATH=$HADOOP_HOME/bin:$JAVA_HOME/bin:$PATH
+export MAVEN_OPTS="-server -Xms256m -Xmx512m"
