@@ -102,6 +102,10 @@ if [ -f /etc/bash_completion ] && ! shopt -oq posix; then
     . /etc/bash_completion
 fi
 
+if [ -f /usr/local/git/contrib/completion/git-completion.bash ]; then
+    source /usr/local/git/contrib/completion/git-completion.bash
+fi
+
 export FLEX_HOME="$HOME/work/sdks/3.5.0"
 alias FANT="ant -DFLEX_HOME=$FLEX_HOME"
 alias cdhh='cd $HADOOP_HOME'
@@ -109,13 +113,20 @@ alias cdhue='cd $HOME/opsaps/repo.d/hue'
 alias cdaps='cd $HOME/opsaps'
 alias h_start='./repo.d/hue/tools/scripts/configure-hadoop.sh start'
 alias h_stop='./repo.d/hue/tools/scripts/configure-hadoop.sh stop'
-alias hue_start='DESKTOP_DEBUG=1 DESKTOP_DEPENDER_DEBUG=1 ./repo.d/hue/build/env/bin/hue runserver_plus 0.0.0.0:16080'
 alias hue_job='./repo.d/hue/build/env/bin/hue subjobd'
 alias hue_auth='./repo.d/hue/build/env/bin/hue authmanager'
-alias auth_tests='~/opsaps/repo.d/hue/build/env/bin/hue test specific userman.tests --pdb --pdb-failure -s'
+alias hue_start='DESKTOP_DEBUG=1 DESKTOP_DEPENDER_DEBUG=1 ./repo.d/hue/build/env/bin/hue runserver_plus 0.0.0.0:8000'
+# alias hue_start='DESKTOP_DEBUG=1 DESKTOP_DEPENDER_DEBUG=1 ./repo.d/hue/build/env/bin/hue runserver_plus 0.0.0.0:16080'
+# alias hue_start='DESKTOP_DEBUG=1 ./repo.d/hue/build/env/bin/hue runserver_plus'
+alias hue_job='./repo.d/hue/build/env/bin/hue jobsubd'
+alias hue_auth='DESKTOP_DEBUG=1 DESKTOP_DEPENDER_DEBUG=1 ./repo.d/hue/build/env/bin/hue authmanager'
+alias hue_bee='./repo.d/hue/build/env/bin/hue beeswax_server'
+alias hue_head='./repo.d/hue/build/env/bin/hue headlamp_server'
+alias auth_userman='~/opsaps/repo.d/hue/build/env/bin/hue test specific userman'
+alias auth_tests='~/opsaps/repo.d/hue/build/env/bin/hue  test specific userman.tests --pdb --pdb-failure -s'
+alias auth_tests2='~/opsaps/repo.d/hue/build/env/bin/hue test specific userman.tests --pdb --pdb-failure -s'
+alias auth_tests3='~/opsaps/repo.d/hue/build/env/bin/hue test specific userman.tests:test_group_permissions --pdb --pdb-failure -s'
 alias gx='gitx --all &'
-
-export PATH=$HOME/crepo:$PATH
 
 function parse_git_branch
 {
@@ -130,16 +141,16 @@ parse_svn_revision() {
         echo "(r$REV$DIRTY)"
 }
 
-function desktop-review { 
+function auth-review { 
     if [ $# -lt 3 ]; then
-        echo "Usage: desktop-review rev-list reviewer summary ...";
+        echo "Usage: auth-review rev-list reviewer summary ...";
         return;
     fi;
     REVLIST=$1;
     REVIEWER=$2;
     SUMMARY=$3;
     shift 3;
-    post-review --description="$(git whatchanged $REVLIST)" --target-groups=app-auth --target-people="$REVIEWER" --diff-filename=<(git diff "$REVLIST") --summary="$SUMMARY" $@
+    post-review --target-groups=apps-auth --target-people="$REVIEWER" --diff-filename=<(git diff "$REVLIST") --summary="$SUMMARY" $@
 }
 
 
@@ -154,21 +165,33 @@ function desktop-review {
     REVIEWER=$2;
     SUMMARY=$3;
     shift 3;
-    post-review --description="$(git whatchanged $REVLIST)" --target-groups=auth_apps --target-people="$REVIEWER" --diff-filename=<(git diff "$REVLIST") --summary="$SUMMARY" $@
+    post-review --target-groups=auth_apps --target-people="$REVIEWER" --diff-filename=<(git diff -w "$REVLIST") --summary="$SUMMARY" $@
+}
+
+function cmf-review { 
+    if [ $# -lt 3 ]; then
+        echo "Usage: cmf-review rev-list reviewer summary ...";
+        return;
+    fi;
+    REVLIST=$1;
+    REVIEWER=$2;
+    SUMMARY=$3;
+    shift 3;
+    post-review --target-groups=cmf --target-people="$REVIEWER" --diff-filename=<(git diff -w "$REVLIST") --summary="$SUMMARY" $@
 }
 
 unamestr=`uname`
 
 if [[ "$unamestr" == "Darwin" ]]; then
-    export PATH=/usr/local/mysql-5.5.8-osx10.6-x86_64/bin:$PATH
+    export PATH=/usr/local/mysql-5.5.8-osx10.6-x86_64/bin:/opt/local/bin:/opt/local/sbin:$PATH
     function gvim { /Applications/MacVim.app/Contents/MacOS/Vim -g $*; } 
 fi
 
+export HADOOP_HOME=$HOME/hadoop-0.20.2-CDH3B4-SNAPSHOT
 export HADOOP_CONF_DIR=$HOME/hadoop-conf
-export HADOOP_HOME=/home/andyao/hadoop-0.20.2-CDH3B4-SNAPSHOT
-export OOZIE_HOME=/home/andyao/oozie-2.3.0-CDH3B4-SNAPSHOT
+export OOZIE_HOME=$HOME/oozie-2.3.0-CDH3B4-SNAPSHOT
 export HH=$HADOOP_HOME
 export HC=$HADOOP_HOME/conf
 export HL=$HADOOP_HOME/logs
-export PATH=$HADOOP_HOME/bin:$JAVA_HOME/bin:$PATH
+export PATH=$HOME/crepo:$HADOOP_HOME/bin:$JAVA_HOME/bin:$HOME/bin:$HOME/github/andrewyao/JSLintCmd:$PATH
 export MAVEN_OPTS="-server -Xms256m -Xmx512m"

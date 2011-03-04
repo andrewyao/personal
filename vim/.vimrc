@@ -184,6 +184,7 @@ map ,N :set nu
 map ,z :let g:zenburn_high_Contrast=1\|source ~/.vim/colors/zenburn.vim
 map ,Z :let g:zenburn_high_Contrast=0\|source ~/.vim/colors/zenburn.vim
 map ,gd :new\|:set filetype=diff\|:r !git diff origin/master HEAD
+map ,s :silent! %s/\s\+$//g
 abbr copyr ## (c) Copyright 2011 Cloudera, Inc. All rights reserved.
 "------ all of this stuff allows me to write gzipped files natively...cool eh?
 autocmd BufRead *.gz set bin|%!gunzip
