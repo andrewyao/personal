@@ -127,6 +127,11 @@ alias auth_tests='~/opsaps/repo.d/hue/build/env/bin/hue  test specific userman.t
 alias auth_tests2='~/opsaps/repo.d/hue/build/env/bin/hue test specific userman.tests --pdb --pdb-failure -s'
 alias auth_tests3='~/opsaps/repo.d/hue/build/env/bin/hue test specific userman.tests:test_group_permissions --pdb --pdb-failure -s'
 alias gx='gitx --all &'
+alias cmf_start='cd $HOME/cmf/server ;mvn -e compile exec:java -Dexec.mainClass=com.cloudera.cmf.server.Main  -Dexec.args="-d src/main/jamon" '
+alias cmf_db_start='CMF_CONF_DIR=/Users/andyao/cmf/ cd $HOME/cmf/server ;mvn -e compile exec:java -Dexec.mainClass=com.cloudera.cmf.server.Main -Dexec.args="-d src/main/jamon" '
+alias mysqlstart='sudo /opt/local/bin/mysqld_safe5 &'
+alias mysqlstop='/opt/local/bin/mysqladmin5 -u root -p shutdown'
+alias vf='vim `find . -name "$@"`'
 
 function parse_git_branch
 {
@@ -146,7 +151,7 @@ function auth-review {
         echo "Usage: auth-review rev-list reviewer summary ...";
         return;
     fi;
-    REVLIST=$1;
+    REVLIST=$1^..$1;
     REVIEWER=$2;
     SUMMARY=$3;
     shift 3;
@@ -161,7 +166,7 @@ function desktop-review {
         echo "Usage: desktop-review rev-list reviewer summary ...";
         return;
     fi;
-    REVLIST=$1;
+    REVLIST=$1^..$1;
     REVIEWER=$2;
     SUMMARY=$3;
     shift 3;
@@ -173,7 +178,7 @@ function cmf-review {
         echo "Usage: cmf-review rev-list reviewer summary ...";
         return;
     fi;
-    REVLIST=$1;
+    REVLIST=$1^..$1;
     REVIEWER=$2;
     SUMMARY=$3;
     shift 3;
@@ -185,6 +190,7 @@ unamestr=`uname`
 if [[ "$unamestr" == "Darwin" ]]; then
     export PATH=/usr/local/mysql-5.5.8-osx10.6-x86_64/bin:/opt/local/bin:/opt/local/sbin:$PATH
     function gvim { /Applications/MacVim.app/Contents/MacOS/Vim -g $*; } 
+    function chrome-dev { /Applications/Google\ Chrome.app/Contents/MacOS/Google\ Chrome  --enable-extension-timeline-api; }
 fi
 
 export HADOOP_HOME=$HOME/hadoop-0.20.2-CDH3B4-SNAPSHOT
