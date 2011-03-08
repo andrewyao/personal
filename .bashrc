@@ -127,11 +127,13 @@ alias auth_tests='~/opsaps/repo.d/hue/build/env/bin/hue  test specific userman.t
 alias auth_tests2='~/opsaps/repo.d/hue/build/env/bin/hue test specific userman.tests --pdb --pdb-failure -s'
 alias auth_tests3='~/opsaps/repo.d/hue/build/env/bin/hue test specific userman.tests:test_group_permissions --pdb --pdb-failure -s'
 alias gx='gitx --all &'
-alias cmf_start='cd $HOME/cmf/server ;mvn -e compile exec:java -Dexec.mainClass=com.cloudera.cmf.server.Main  -Dexec.args="-d src/main/jamon" '
+alias cmf_start='cd $HOME/cmf/server;mvn -e compile exec:java -Dexec.mainClass=com.cloudera.cmf.server.Main  -Dexec.args="-d src/main/jamon" '
 alias cmf_db_start='CMF_CONF_DIR=/Users/andyao/cmf/ cd $HOME/cmf/server ;mvn -e compile exec:java -Dexec.mainClass=com.cloudera.cmf.server.Main -Dexec.args="-d src/main/jamon" '
+alias cmf_mock='cd $HOME/cmf/server; mvn -e compile exec:java -Dexec.mainClass=com.cloudera.cmf.server.AgentMock -Dexec.args="5"'
 alias mysqlstart='sudo /opt/local/bin/mysqld_safe5 &'
 alias mysqlstop='/opt/local/bin/mysqladmin5 -u root -p shutdown'
 alias vf='vim `find . -name "$@"`'
+alias grm='git rebase -i origin/master'
 
 function parse_git_branch
 {
@@ -155,7 +157,7 @@ function auth-review {
     REVIEWER=$2;
     SUMMARY=$3;
     shift 3;
-    post-review --target-groups=apps-auth --target-people="$REVIEWER" --diff-filename=<(git diff "$REVLIST") --summary="$SUMMARY" $@
+    post-review --target-groups=apps-auth --target-people="$REVIEWER" --diff-filename=<(git diff -w "$REVLIST") --summary="$SUMMARY" $@
 }
 
 

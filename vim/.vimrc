@@ -134,6 +134,7 @@ au! BufRead,BufNewFile *.xml   set nowrap
 au! BufRead,BufNewFile *.uix   set filetype=xml nowrap
 au! BufRead,BufNewFile *.jsp   set filetype=xml nowrap
 au! BufRead,BufNewFile *.jspf  set filetype=xml nowrap
+au! BufRead,BufNewFile *.jamon set filetype=jamon nowrap
 au! BufRead,BufNewFile *.java  set cino=(0 
 au! BufRead,BufNewFile *.sql   set ic filetype=plsql
 au! BufRead,BufNewFile *.sq    set ic filetype=plsql
