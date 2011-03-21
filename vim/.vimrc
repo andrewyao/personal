@@ -13,16 +13,52 @@ set backspace=2
 
 " i use vim to code mostly, so autoindent makes sense
 set autoindent
+set smarttab
+set smartindent
+set wildmenu
+set wildmode=longest,full
+set backspace=indent,eol,start
+set tags=tags
+
+" When you hit 'K' over a word to get the man page,
+" make man search programming sections first, so that function man
+" pages are found instead of command man pages from section 1
+set keywordprg=man\ -S\ 3:2:7
+
+" Convenient windows key mappings
+map <C-J> <C-W>j
+map <C-K> <C-W>k
+map <C-H> <C-W>h
+map <C-L> <C-W>l
 
 " definitely.  can't code without it
 syntax on
+
+map zpdb O__import__("ipdb").set_trace()<ESC>
+
+" Pyflakes
+noremap <silent> <F2> :PyflakesUpdate<CR>
+noremap <silent> <F3> :ClearPyflakes<CR>
+" Toggle TagList
+nnoremap <silent> <F8> :TlistToggle<CR>
+" Highlight current word
+nnoremap <silent> <F9> :let @/='\<<C-R>=expand("<cword>")<CR>\>'<CR>:set hls<CR>
+nnoremap <silent> <F10> :setlocal spell spelllang=en_us<CR>
+" Maximize windows
+noremap <silent> <F12> :set winheight=999<CR>
+
+if has("unix")
+  cmap %/ <C-R>=expand("%:p:h") . '/'<CR>
+else
+  cmap %/ <C-R>=expand("%:p:h") . '\'<CR>
+endif
+
 
 " save before :make, :suspend, etc
 set autowrite
 
 " don't wrap lines by default.  makes sense on 80x25.
 set nowrap
-set textwidth=0
 
 " write a .viminfo file, don't store more than 50 lines
 set viminfo='20,\"50
@@ -98,8 +134,6 @@ hi Comment ctermfg=DarkGrey guifg=DarkGrey
 " suffixes that get lower priority when doing tab completion for filenames.
 set suffixes=.bak,~,.swp,.o,.info,.aux,.log,.dvi,.bbl,.blg,.brf,.cb,.ind,.idx,.ilg,.inx,.out,.toc,.pyc
 
-set textwidth=79
-
 set formatoptions +=cr
 
 set nu
@@ -134,7 +168,7 @@ au! BufRead,BufNewFile *.xml   set nowrap
 au! BufRead,BufNewFile *.uix   set filetype=xml nowrap
 au! BufRead,BufNewFile *.jsp   set filetype=xml nowrap
 au! BufRead,BufNewFile *.jspf  set filetype=xml nowrap
-au! BufRead,BufNewFile *.jamon set filetype=jamon nowrap
+au! BufRead,BufNewFile *.jamon set filetype=html nowrap
 au! BufRead,BufNewFile *.java  set cino=(0 
 au! BufRead,BufNewFile *.sql   set ic filetype=plsql
 au! BufRead,BufNewFile *.sq    set ic filetype=plsql
@@ -218,3 +252,135 @@ autocmd BufWinEnter * match ExtraWhitespace /\s\+$/
 autocmd InsertEnter * match ExtraWhitespace /\s\+\%#\@<!$/
 autocmd InsertLeave * match ExtraWhitespace /\s\+$/
 autocmd BufWinLeave * call clearmatches()
+
+if 1 "ignore these functions if not compiled with +eval
+    function! CheckStyle()
+	!clear; styler %
+	edit %
+    endfunction
+
+    function! FixStyle()
+	silent !clear; cd %:h; fstyle.space %:t
+	edit %
+	redraw!
+    endfunction
+
+    function! SccsEdit()
+	if expand('%:h') == ""
+	    exec "silent !sccs edit " . expand('%:t')
+	else
+	    exec "silent !cd " . expand('%:h') . " && sccs edit " .
+			\expand('%:t')
+	endif
+	edit %
+	redraw!
+    endfunction
+
+    function! SccsUnedit()
+	if expand('%:h') == ""
+	    exec "silent !sccs unedit " . expand('%:t')
+	else
+	    exec "silent !cd " . expand('%:h') . " && sccs unedit " .
+			\expand('%:t')
+	endif
+	edit %
+	redraw!
+    endfunction
+
+    function! SccsPrs()
+	let l:file = expand('%')
+	new
+	exec "%!sccs prs '" . l:file . "'"
+	set nomodified
+    endfunction
+
+    function! SccsPrint()
+	let l:file = expand('%')
+	new
+	exec "%!sccs print '" . l:file . "'"
+	set nomodified
+    endfunction
+
+    function! SccsCreate(...)
+	if a:0 != 0
+	    let l:comment = " -y'" . a:1 . "'"
+	else
+	    let l:comment = input("SCCS comment: ")
+	endif
+
+	if l:comment == ""
+	    echo "Empty comment string.  Sccs create aborted."
+	    return
+	endif
+
+	if expand('%:h') == ""
+	    exec "silent !sccs create -y\"" . l:comment . "\" " . expand('%:t')
+	else
+	    exec "silent !cd " . expand('%:h') . " && sccs create -y\"" .
+			\l:comment . "\" " .  expand('%:t')
+	endif
+	redraw!
+    endfunction
+
+    function! SccsDelget(...)
+	let l:comment = ""
+	if a:0 != 0
+	    let l:comment = " -y'" . a:1 . "'"
+	endif
+
+	if expand('%:h') == ""
+	    exec "silent !sccs delget" . l:comment  . " " . expand('%:t')
+	else
+	    exec "silent !cd " . expand('%:h') . " && sccs delget" . l:comment .
+			\" " .  expand('%:t')
+	endif
+	redraw!
+    endfunction
+
+    function! Gitdiffs()
+	silent !clear; git difftool -t gvimdiff % &
+	redraw!
+    endfunction
+
+    function! Gitadd()
+	silent !clear; git add %
+	redraw!
+    endfunction
+
+    function! Gitlog()
+	!clear; git log %
+	redraw!
+    endfunction
+
+    filetype plugin indent on
+    autocmd FileType html setl noexpandtab shiftwidth=2 ts=2 smarttab
+    autocmd FileType xml  setl expandtab shiftwidth=2 smarttab
+    autocmd FileType tex  setl expandtab shiftwidth=4 smarttab
+    autocmd FileType python  setl expandtab shiftwidth=2 smarttab textwidth=80
+    autocmd FileType java  setl expandtab shiftwidth=2 smarttab cindent textwidth=80
+    autocmd FileType java setl tags=~/.jtags,tags
+    autocmd FileType javascript setl noexpandtab ts=2 smarttab
+    autocmd FileType c  setl expandtab shiftwidth=4 smarttab cindent
+    autocmd FileType cpp  setl expandtab shiftwidth=4 smarttab cindent
+    autocmd FileType rst setl expandtab shiftwidth=4 smarttab
+    autocmd BufRead,BufNewFile *.md	setl filetype=mkd
+    autocmd BufRead,BufNewFile Makefile* setl noexpandtab nosmarttab ts=8 filetype=make
+    autocmd BufRead,BufNewFile *.mako setl filetype=mako
+    autocmd BufRead,BufNewFile *.json setl filetype=json
+    autocmd BufRead,BufNewFile *.txt setl tw=65
+
+    "command! Cstyle call CheckStyle()
+    "command! Fstyle call FixStyle()
+    "command! Edits call SccsEdit()
+    "command! Unedits call SccsUnedit()
+    "command! Prs call SccsPrs()
+    "command! Prints call SccsPrint()
+    "command! -nargs=? Creates :call SccsCreate(<args>)
+    "command! -nargs=? Delgets :call SccsDelget(<args>)
+
+    command! Gitlog call Gitlog()
+    command! Gitadd call Gitadd()
+    command! Diffs call Gitdiffs()
+
+    command! GDiff VCSVimDiff
+endif
