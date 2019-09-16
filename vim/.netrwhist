@@ -1,0 +1,11 @@
+let g:netrw_dirhistmax  =10
+let g:netrw_dirhist_cnt =9
+let g:netrw_dirhist_1='/Users/andrewyao/cloudera-ui/demo'
+let g:netrw_dirhist_2='/Users/andrewyao/cloudera-ui/demo/demos'
+let g:netrw_dirhist_3='/Users/andrewyao/cloudera-ui/demo'
+let g:netrw_dirhist_4='/Users/andrewyao/cloudera-ui/demo/pattern'
+let g:netrw_dirhist_5='/Users/andrewyao/cloudera-ui/webpack-loaders'
+let g:netrw_dirhist_6='/Users/andrewyao/cmf/web/static/less/specific'
+let g:netrw_dirhist_7='/Users/andrewyao/cmf/web/static/less'
+let g:netrw_dirhist_8='/Users/andrewyao/cmf/web/static/less/specific'
+let g:netrw_dirhist_9='/Users/andrewyao/cloudera-ui/demo/pattern'
